@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RG GAMER BOY FF • 5 Step Verification</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#06070a;
+  --bg2:#0b0d12;
+  --panel:rgba(16,19,27,.94);
+  --panel2:#0c0f15;
+  --border:rgba(255,255,255,.08);
+  --accent:#ff8500;
+  --accent2:#ffb347;
+  --green:#22c55e;
+  --discord:#5865f2;
+  --text:#fff;
+  --muted:#a6acb8;
+}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:Arial,sans-serif;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(255,133,0,.18),transparent 34%),
+    radial-gradient(circle at 0% 50%,rgba(88,101,242,.08),transparent 28%),
+    linear-gradient(145deg,var(--bg),var(--bg2));
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+header{
+  position:relative;padding:18px 20px 16px;text-align:center;
+  background:rgba(7,8,12,.86);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+.logo{
+  font-size:25px;font-weight:900;letter-spacing:.8px;
+  text-shadow:0 0 22px rgba(255,133,0,.25);
+}
+.tag{
+  color:var(--accent2);font-size:12px;margin-top:7px;
+  letter-spacing:1px;text-transform:uppercase;
+}
+.hero{
+  max-width:560px;margin:0 auto;padding:22px 15px 4px;text-align:center;
+  position:relative;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 11px;border:1px solid rgba(255,133,0,.28);
+  border-radius:99px;background:rgba(255,133,0,.08);
+  color:#ffc37a;font-size:11px;font-weight:800;letter-spacing:.8px;
+  text-transform:uppercase;
+}
+.hero-title{font-size:29px;line-height:1.15;margin:13px 0 7px;font-weight:900}
+.hero-sub{margin:0;color:#9fa5b2;font-size:13px;line-height:1.55}
+.wrap{max-width:560px;margin:0 auto;padding:12px 15px 20px;text-align:center;position:relative}
+.progress{
+  text-align:center;color:#858b98;margin-bottom:9px;font-size:12px;
+  letter-spacing:1px;font-weight:700;
+}
+.progress b{color:var(--accent)}
+.progressbar{
+  height:8px;background:#1a1e27;border-radius:99px;overflow:hidden;
+  margin:0 auto 14px;max-width:560px;border:1px solid rgba(255,255,255,.04);
+}
+.progressfill{
+  height:100%;width:20%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  box-shadow:0 0 16px rgba(255,133,0,.38);
+  transition:width .35s ease;
+}
+.card{
+  position:relative;background:linear-gradient(180deg,rgba(20,23,32,.97),rgba(12,14,20,.97));
+  border:1px solid var(--border);border-radius:20px;padding:20px;text-align:center;
+  box-shadow:0 18px 55px rgba(0,0,0,.38);overflow:hidden;
+}
+.card:before{
+  content:"";position:absolute;left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+}
+h1{margin:0 0 8px;font-size:24px}
+p{color:#c0c5cf;line-height:1.6;text-align:center}
+.ad{
+  height:78px;border:1px dashed #424752;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  color:#777;margin:15px auto;font-size:12px;overflow:hidden;
+  background:#0b0d12;
+}
+button,a.action{
+  width:100%;padding:14px;border:0;border-radius:12px;
+  background:linear-gradient(135deg,#ff8500,#e86e00);
+  color:#fff;font-weight:900;font-size:14px;text-align:center;
+  text-decoration:none;display:block;cursor:pointer;
+  box-shadow:0 8px 22px rgba(255,133,0,.16);
+  transition:transform .15s ease,filter .15s ease;
+}
+button:hover,a.action:hover{filter:brightness(1.08);transform:translateY(-1px)}
+button:disabled{background:#333741;color:#858995;cursor:not-allowed;box-shadow:none}
+#next{display:none;background:linear-gradient(135deg,#22c55e,#16a34a);margin-top:12px}
+.timer{text-align:center;color:#a6acb8;margin:10px 0;min-height:20px;font-size:13px}
+.note{text-align:center;color:#686f7c;font-size:11px;margin:14px auto 0;max-width:460px}
+.hidden{display:none!important}
+.success{
+  margin:12px 0;padding:13px;border-radius:13px;
+  background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);
+  color:#72e49b;font-weight:900;font-size:13px;
+}
+.verify-box{
+  margin-top:15px;padding:16px;border:1px solid var(--border);
+  border-radius:16px;background:rgba(7,9,13,.72);
+}
+.verify-icon{font-size:34px;margin-bottom:6px}
+.verify-status{color:#a6acb8;font-size:13px;line-height:1.55;margin:10px 0 14px}
+#connectDiscord{
+  background:linear-gradient(135deg,#5865f2,#4752c4);
+  box-shadow:0 8px 22px rgba(88,101,242,.2);
+}
+.small-status{font-size:11px;color:#737a87;margin-top:10px;min-height:18px}
+.media-section{
+  max-width:560px;margin:26px auto 20px;text-align:center;padding:0 15px;
+  position:relative;
+}
+.media-title{
+  font-size:16px;font-weight:900;margin-bottom:11px;
+  color:#e9ebef;letter-spacing:.3px;
+}
+.media-image{
+  width:100%;max-height:220px;object-fit:cover;border-radius:15px;
+  display:block;margin:0 auto 14px;border:1px solid var(--border);
+  box-shadow:0 12px 35px rgba(0,0,0,.3);
+}
+.footer-note{color:#505663;font-size:10px;text-align:center;padding:0 15px 25px}
+.feature-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  margin:14px auto 0;max-width:560px;
+}
+.feature{
+  padding:10px 7px;border:1px solid var(--border);border-radius:12px;
+  background:rgba(255,255,255,.025);color:#9ea5b1;font-size:10px;
+}
+.feature strong{display:block;color:#e9ebef;font-size:11px;margin-bottom:3px}
+@media(max-width:390px){
+  .hero-title{font-size:25px}
+  .feature-row{gap:6px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">RG GAMER BOY FF</div>
+  <div class="tag">Verified Role Access • Gaming • Community</div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">🛡️ VERIFIED ROLE ACCESS</div>
+  <div class="hero-title">Complete Verification</div>
+  <p class="hero-sub">Finish all 5 access stages, then connect Discord to unlock your verified access.</p>
+  <div class="feature-row">
+    <div class="feature"><strong>⚡ 5 STAGES</strong>Step-by-step</div>
+    <div class="feature"><strong>🔐 SECURE</strong>Discord verify</div>
+    <div class="feature"><strong>🎯 ACCESS</strong>Final unlock</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="progress">STEP <b id="stepNo">1</b> OF <b>5</b></div>
+  <div class="progressbar"><div class="progressfill" id="progressFill"></div></div>
+
+  <div class="card" id="mainCard">
+    <h1 id="title">Verified Role Access Step 1</h1>
+    <p id="description">
+      Complete this test step to continue to the next gaming page.
+    </p>
+
+    <div class="ad">
+      <img src="https://i.supaimg.com/d9c7f586-ce17-4c79-9667-6ede2824ff5b/1a7ce4c6-6a57-4468-bf01-71ae5d0b4401.png"
+           alt="Advertisement"
+           style="width:100%;height:90px;object-fit:cover;border-radius:12px;">
+    </div>
+
+    <div class="timer" id="timer">Click UNLOCK to start the 10-second test.</div>
+    <button id="unlock" onclick="unlockStep()">UNLOCK STEP 1</button>
+    <a id="next" class="action" href="#" onclick="goNext(event)">GO TO STEP 2</a>
+
+    <div class="note">
+      Complete all 5 steps to unlock Verified Role Access.
+    </div>
+  </div>
+
+  <div class="card verify-box hidden" id="verifyCard">
+    <div class="verify-icon">🎉</div>
+    <h1>All 5 Steps Completed</h1>
+    <p>You have completed all five testing steps. The next stage is Verified Role Access.</p>
+
+    <div class="success">✓ ✓ 5 / 5 VERIFICATION STEPS COMPLETED</div>
+
+    <div class="verify-box">
+      <div style="font-size:18px;font-weight:700">🛡️ Verified Role Access</div>
+      <div class="verify-status">
+        Connect your Discord account to receive your verified role. After the backend is connected, your Discord
+        membership and required role can be verified here.
+      </div>
+      <button id="connectDiscord" onclick="connectDiscord()">VERIFY & GET ROLE</button>
+      <div class="small-status" id="discordStatus">Verified Role Access is ready for backend connection.</div>
+    </div>
+
+    <a id="mainWebsite" class="action hidden" href="https://mega.nz/file/8QxDhRLL#wgLt1N4zltt6Msp1heg3ADk6gxU3wLqZOb_LpYOBooo"
+       target="_blank" rel="noopener noreferrer" style="background:#20b85a;margin-top:12px">
+      OPEN MAIN WEBSITE
+    </a>
+
+    <button onclick="restartTest()" style="background:#444;margin-top:12px">
+      RESTART TEST
+    </button>
+  </div>
+</div>
+
+<div class="media-section">
+  <div class="media-title">RG GAMER BOY FF • Gaming Video</div>
+  <a class="media-image-link"
+     href="https://youtu.be/q6Efe1DrU-Y?si=mszAqAP-ri_qRkcM"
+     target="_blank" rel="noopener noreferrer">
+    <img class="media-image"
+         src="https://i.supaimg.com/d9c7f586-ce17-4c79-9667-6ede2824ff5b/e65bd442-1201-4f87-b2ae-3751d87aecd5.png"
+         alt="RG GAMER BOY FF">
+  </a>
+</div>
+
+<div class="footer-note">
+  Discord role verification will be enabled after the Railway backend is connected.
+</div>
+
+<script>
+/*
+  DISCORD BACKEND CONFIG
+  ----------------------
+  Later, when the Railway backend is ready, replace BACKEND_URL with
+  your Railway public HTTPS URL.
+
+  Example:
+  const BACKEND_URL = "https://your-service.up.railway.app";
+
+  The frontend must NEVER contain your Discord Bot Token or Client Secret.
+*/
+const BACKEND_URL = "https://discord-bot-production-8904.up.railway.app";
+
+let step = 1;
+let unlocked = false;
+let interval = null;
+
+const titles = [
+  "Verified Role Access Step 1",
+  "Verified Role Access Step 2",
+  "Verified Role Access Step 3",
+  "Verified Role Access Step 4",
+  "Verified Role Access Step 5"
+];
+
+const descriptions = [
+  "Welcome to the first gaming access page. Complete the timer to unlock Step 2.",
+  "Step 1 completed. Complete this page to unlock Step 3.",
+  "You are halfway through the access system. Complete this page to unlock Step 4.",
+  "Almost there! Complete this page to unlock the final step.",
+  "Final step! Complete the timer to unlock Discord verification."
+];
+
+function updateProgress(){
+  document.getElementById("stepNo").textContent = step;
+  document.getElementById("progressFill").style.width = (step * 20) + "%";
+}
+
+function unlockStep(){
+  const button = document.getElementById("unlock");
+  const timer = document.getElementById("timer");
+  const next = document.getElementById("next");
+
+  if(interval) clearInterval(interval);
+
+  button.disabled = true;
+  let seconds = 10;
+  timer.textContent = "Please wait " + seconds + " seconds...";
+
+  interval = setInterval(() => {
+    seconds--;
+
+    if(seconds > 0){
+      timer.textContent = "Please wait " + seconds + " seconds...";
+    }else{
+      clearInterval(interval);
+      interval = null;
+      unlocked = true;
+      button.textContent = "UNLOCKED ✓";
+      timer.textContent = "Step unlocked successfully.";
+      next.style.display = "block";
+      next.textContent = step < 5 ? "GO TO STEP " + (step + 1) : "CONTINUE TO DISCORD VERIFICATION";
+    }
+  },1000);
+}
+
+function goNext(event){
+  event.preventDefault();
+  if(!unlocked) return;
+
+  if(step < 5){
+    step++;
+    unlocked = false;
+
+    document.getElementById("title").textContent = titles[step-1];
+    document.getElementById("description").textContent = descriptions[step-1];
+
+    const button = document.getElementById("unlock");
+    const next = document.getElementById("next");
+    const timer = document.getElementById("timer");
+
+    button.disabled = false;
+    button.textContent = "UNLOCK STEP " + step;
+    timer.textContent = "Click UNLOCK to start the 10-second test.";
+    next.style.display = "none";
+
+    updateProgress();
+  }else{
+    showVerification();
+  }
+}
+
+function showVerification(){
+  if(interval) clearInterval(interval);
+  document.getElementById("mainCard").classList.add("hidden");
+  document.getElementById("verifyCard").classList.remove("hidden");
+  document.getElementById("progressFill").style.width = "100%";
+  document.getElementById("stepNo").textContent = "5";
+}
+
+function connectDiscord(){
+  const status = document.getElementById("discordStatus");
+
+  if(!BACKEND_URL){
+    status.textContent = "Backend is not connected yet. The Discord button is ready; Railway will be connected in the next stage.";
+    return;
+  }
+
+  status.textContent = "Opening Discord authorization for role verification...";
+
+  const returnUrl = encodeURIComponent(window.location.href);
+  window.location.href = BACKEND_URL.replace(/\/$/, "") + "/auth/discord?return=" + returnUrl;
+}
+
+function restartTest(){
+  if(interval) clearInterval(interval);
+  step = 1;
+  unlocked = false;
+
+  document.getElementById("mainCard").classList.remove("hidden");
+  document.getElementById("verifyCard").classList.add("hidden");
+
+  document.getElementById("title").textContent = titles[0];
+  document.getElementById("description").textContent = descriptions[0];
+  document.getElementById("unlock").disabled = false;
+  document.getElementById("unlock").textContent = "UNLOCK STEP 1";
+  document.getElementById("timer").textContent = "Click UNLOCK to start the 10-second test.";
+  document.getElementById("next").style.display = "none";
+  document.getElementById("discordStatus").textContent = "Verified Role Access is ready for backend connection.";
+  updateProgress();
+}
+
+updateProgress();
+</script>
+
+</body>
+</html>
