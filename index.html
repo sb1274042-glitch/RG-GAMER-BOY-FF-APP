@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RG GAMER BOY FF — Verification</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#070707;--card:#111;--line:#272727;--text:#f5f5f5;--muted:#a6a6a6;--accent:#fff}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#242424 0,#0b0b0b 42%,#050505 100%);color:var(--text);font-family:Arial,Helvetica,sans-serif;display:flex;align-items:center;justify-content:center;padding:20px}
+.wrap{width:100%;max-width:520px}
+.brand{text-align:center;margin-bottom:22px}
+.shield-logo{width:64px;height:72px;margin:0 auto 10px;filter:drop-shadow(0 0 12px rgba(255,255,255,.16))}
+.shield-logo svg{width:100%;height:100%;fill:#fff;stroke:#000;stroke-width:2;stroke-linejoin:round}
+.shield-logo svg path:last-child{fill:none;stroke:#000;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.brand h1{font-size:22px;letter-spacing:2px;margin:0 0 8px;font-weight:800}
+.brand p{font-size:12px;color:var(--muted);margin:0}
+.card{background:rgba(17,17,17,.96);border:1px solid var(--line);border-radius:22px;padding:25px;box-shadow:0 18px 60px rgba(0,0,0,.45)}
+.progress{display:flex;gap:7px;margin-bottom:14px}
+.timerbar{height:5px;background:#292929;border-radius:9px;overflow:hidden;margin-bottom:8px}
+.timerbar div{height:100%;width:0%;background:#fff;transition:width 1s linear}
+.countdown{text-align:center;color:#999;font-size:11px;margin-bottom:20px}
+.countdown b{color:#fff}
+.loading-screen{position:fixed;inset:0;background:#070707;display:flex;align-items:center;justify-content:center;z-index:20}
+.loading-card{width:min(92vw,420px);text-align:center;padding:28px;border:1px solid #262626;border-radius:20px;background:linear-gradient(180deg,#111,#090909);box-shadow:0 0 40px #000}
+.loader-ring{width:70px;height:70px;margin:0 auto 22px;border:5px solid #292929;border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-card h2{font-size:20px;margin:0 0 8px}.loading-card p{color:#999;font-size:13px;margin:0 0 20px}.load-track{height:8px;background:#252525;border-radius:99px;overflow:hidden}.load-track div{height:100%;width:0;background:#fff;transition:width .2s linear}.load-percent{margin-top:10px;font-weight:800;font-size:13px}
+.dot{height:5px;flex:1;border-radius:9px;background:#292929;transition:.25s}
+.dot.active{background:#fff}
+.step-label{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+h2{font-size:25px;margin:0 0 10px}
+p{line-height:1.55;color:#bdbdbd;font-size:14px}
+.note{background:#181818;border:1px solid #292929;border-radius:12px;padding:13px;font-size:12px;color:#bdbdbd;margin:18px 0}
+ul{padding-left:20px;color:#bdbdbd;font-size:14px;line-height:1.8}
+.actions{display:flex;gap:10px;margin-top:24px}
+button,.linkbtn{border:0;border-radius:12px;padding:13px 16px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;text-align:center}
+.primary{background:#fff;color:#000;flex:1}
+.secondary{background:#202020;color:#fff;border:1px solid #303030}
+button:disabled{opacity:.45;cursor:not-allowed}
+.hidden{display:none!important}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:20px;color:#ccc;font-size:13px;line-height:1.45}
+.check input{margin-top:3px;width:17px;height:17px;accent-color:#fff}
+.status{text-align:center;padding:28px 8px}
+.spinner{width:35px;height:35px;border:3px solid #333;border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 18px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.success{font-size:48px;margin-bottom:12px}
+.small{font-size:12px;color:#888;margin-top:16px}
+.step-list{display:grid;gap:10px;margin:20px 0}
+.step-item{display:flex;gap:12px;align-items:center;background:#181818;border:1px solid #292929;border-radius:12px;padding:12px}
+.num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#2b2b2b;color:#fff;font-weight:800;font-size:12px}
+.step-item b{font-size:13px}.step-item span{display:block;color:#999;font-size:12px;margin-top:3px}
+
+.wait-overlay{position:fixed;inset:0;background:#070707;display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}
+.wait-overlay.hidden{display:none!important}
+.wait-card{width:min(92vw,420px);text-align:center;padding:30px 25px;border:1px solid #262626;border-radius:20px;background:linear-gradient(180deg,#111,#090909);box-shadow:0 0 40px #000}
+.wait-shield{
+  width:78px;height:86px;margin:0 auto 18px;position:relative;
+  display:grid;place-items:center;
+}
+.wait-shield svg{width:78px;height:86px;overflow:visible}
+.wait-shield .shield-base{
+  fill:#151515;stroke:#303030;stroke-width:2;
+}
+.wait-shield .shield-fill{
+  fill:var(--shield-color,#ff3b3b);
+  clip-path:inset(100% 0 0 0);
+  transition:clip-path .15s linear,fill .35s ease;
+}
+.wait-shield .shield-outline{
+  fill:none;stroke:var(--shield-color,#ff3b3b);stroke-width:2.5;
+  opacity:.35;transition:stroke .35s ease;
+}
+.wait-card h2{font-size:20px;margin:0 0 8px}
+.wait-card p{color:#999;font-size:13px;margin:0 0 18px}
+.wait-track{height:9px;background:#252525;border-radius:99px;overflow:hidden}
+.wait-track div{height:100%;width:0;background:#fff;transition:width .1s linear}
+.wait-percent{margin-top:10px;font-weight:800;font-size:13px}
+
+
+/* Step 5 only: green verification theme */
+.screen[data-step="4"]{
+  --verify-green:#35d06f;
+  --verify-green-soft:rgba(53,208,111,.12);
+}
+.screen[data-step="4"] .step-label,
+.screen[data-step="4"] .verified-badge{
+  color:#35d06f;
+}
+.screen[data-step="4"] .verified-badge{
+  border-color:rgba(53,208,111,.45);
+  background:rgba(53,208,111,.10);
+}
+.screen[data-step="4"] .profile-logo{
+  color:#35d06f;
+  border-color:rgba(53,208,111,.45);
+}
+.screen[data-step="4"] .security-card strong{
+  color:#35d06f;
+}
+.screen[data-step="4"] .primary{
+  background:#35d06f;
+  color:#07110a;
+}
+.screen[data-step="4"] .step-item{
+  border-color:rgba(53,208,111,.20);
+}
+.screen[data-step="4"] .note{
+  border-color:rgba(53,208,111,.20);
+}
+
+/* Human verification modal */
+.human-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(5px);
+  display:flex;align-items:center;justify-content:center;padding:18px;z-index:70;
+}
+.human-overlay.hidden{display:none!important}
+.human-card{
+  width:min(94vw,430px);background:#111;border:1px solid #2b2b2b;border-radius:20px;
+  padding:24px;box-shadow:0 20px 70px rgba(0,0,0,.65);
+}
+.human-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.human-icon{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  background:rgba(53,208,111,.12);border:1px solid rgba(53,208,111,.35);color:#35d06f;font-size:22px;
+}
+.human-card h3{margin:0;font-size:20px}
+.human-card .human-sub{margin:0 0 18px;color:#999;font-size:12px;line-height:1.5}
+.challenge{
+  background:#181818;border:1px solid #303030;border-radius:14px;padding:16px;margin-bottom:16px;
+}
+.challenge-title{font-size:12px;color:#999;margin-bottom:10px}
+.challenge-question{font-size:18px;font-weight:800;margin-bottom:12px}
+.challenge-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.challenge-option{
+  border:1px solid #333;background:#222;color:#fff;border-radius:10px;padding:11px 8px;
+  cursor:pointer;font-weight:800;
+}
+.challenge-option.selected{border-color:#35d06f;background:rgba(53,208,111,.12);color:#35d06f}
+.challenge-option:disabled{cursor:default}
+.human-actions{display:flex;gap:10px}
+.human-actions button{flex:1}
+.human-status{text-align:center;min-height:18px;margin-top:10px;font-size:12px;color:#999}
+.human-status.ok{color:#35d06f}
+.human-status.bad{color:#ff7474}
+
+</style>
+</head>
+<body>
+
+
+<div id="humanOverlay" class="human-overlay hidden" aria-modal="true" role="dialog">
+  <div class="human-card">
+    <div class="human-head">
+      <div class="human-icon">✓</div>
+      <div>
+        <h3>Human verification</h3>
+      </div>
+    </div>
+    <p class="human-sub">Complete the small challenge below to confirm that you are a human.</p>
+
+    <div class="challenge">
+      <div class="challenge-title">Verification challenge</div>
+      <div class="challenge-question" id="challengeQuestion"></div>
+      <div class="challenge-options" id="challengeOptions"></div>
+    </div>
+
+    <div class="human-actions">
+      <button class="secondary" id="humanCancel">Cancel</button>
+      <button class="primary" id="humanVerify" disabled>Verify</button>
+    </div>
+    <div class="human-status" id="humanStatus"></div>
+  </div>
+</div>
+
+<div id="waitScreen" class="wait-overlay hidden" aria-live="polite">
+  <div class="wait-card">
+    
+<div class="wait-shield" id="waitShield" style="--shield-color:#ff3b3b">
+  <svg viewBox="0 0 78 86" aria-hidden="true">
+    <path class="shield-base" d="M39 3 70 14v25c0 20-12 34-31 44C20 73 8 59 8 39V14L39 3Z"/>
+    <path id="shieldFill" class="shield-fill" d="M39 3 70 14v25c0 20-12 34-31 44C20 73 8 59 8 39V14L39 3Z"/>
+    <path class="shield-outline" d="M39 3 70 14v25c0 20-12 34-31 44C20 73 8 59 8 39V14L39 3Z"/>
+    <path d="m24 43 10 10 21-24" fill="none" stroke="#fff" stroke-width="5"
+          stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
+  </svg>
+</div>
+
+    <h2>Verification in progress…</h2>
+    <p id="waitText">Wait 10 seconds...</p>
+    <div class="wait-track"><div id="loadFill"></div></div>
+    <div class="wait-percent" id="loadPercent">0%</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="brand">
+    <div class="shield-logo" aria-label="Verification shield">
+      <svg viewBox="0 0 64 72" role="img" aria-hidden="true">
+        <path d="M32 3 56 12v19c0 17-10 30-24 38C18 61 8 48 8 31V12L32 3Z"></path>
+        <path d="m19 34 8 8 18-20"></path>
+      </svg>
+    </div>
+    <h1>RG GAMER BOY FF</h1>
+    <p>Secure Discord verification</p>
+  </div>
+  <main class="card">
+    <div class="progress" aria-label="Verification progress">
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <div class="timerbar hidden" id="timerbar"><div id="timerfill"></div></div>
+    <div class="countdown hidden" id="countdown">Step verification: <b><span id="seconds">10</span>s</b></div>
+
+    <section class="screen" data-step="0">
+      <div class="step-label">Step 1 of 5</div>
+      <h2>Welcome</h2>
+      <p>Complete the verification steps to connect your Discord account and receive the verification role.</p>
+      <div class="note">Only continue if you are a member of the required Discord server. The final step will open Discord authorization.</div>
+      <div class="actions"><button class="primary next">Continue</button></div>
+    </section>
+
+    <section class="screen hidden" data-step="1">
+      <div class="step-label">Step 2 of 5</div>
+      <h2>Read the instructions</h2>
+      <p>Before authorizing, make sure you understand what will happen.</p>
+      <ul>
+        <li>Discord will ask you to authorize the verification application.</li>
+        <li>The backend checks your Discord account and assigns the configured role.</li>
+        <li>Never enter your Discord password on this website.</li>
+      </ul>
+      <div class="actions"><button class="secondary back">Back</button><button class="primary next">Continue</button></div>
+    </section>
+
+    <section class="screen hidden" data-step="2">
+      <div class="step-label">Step 3 of 5</div>
+      <h2>Confirm eligibility</h2>
+      <p>Confirm that you are ready to use Discord authorization.</p>
+      <label class="check"><input id="agree" type="checkbox"><span>I understand that Discord authorization is required and that the role can only be assigned by the configured bot/backend.</span></label>
+      <div class="actions"><button class="secondary back">Back</button><button class="primary next" id="confirm" disabled>Continue</button></div>
+    </section>
+
+    <section class="screen hidden" data-step="3">
+      <div class="step-label">Step 4 of 5</div>
+      <h2>Final check</h2>
+      <p>Everything is ready. Continue to the secure Discord authorization page.</p>
+      <div class="step-list">
+        <div class="step-item"><div class="num">✓</div><div><b>Verification steps completed</b><span>Ready to connect your Discord account.</span></div></div>
+        <div class="step-item"><div class="num">✓</div><div><b>Secure redirect</b><span>You will be redirected to the configured backend.</span></div></div>
+      </div>
+      <div class="actions"><button class="secondary back">Back</button><button class="primary next">Open authorization</button></div>
+    </section>
+
+    <section class="screen hidden" data-step="4">
+      <div class="step-label">Step 5 of 5</div>
+      <h2>Secure verification</h2>
+      <div class="profile">
+        <div class="profile-logo">✓</div>
+        <div><b>RG GAMER BOY FF</b><span>Verification portal</span></div>
+        <div class="verified-badge">VERIFIED</div>
+      </div>
+      <div class="security-grid">
+        <div class="security-card"><strong>🛡</strong><span>Secure</span><small>Protected redirect</small></div>
+        <div class="security-card"><strong>✓</strong><span>Verified</span><small>Role check enabled</small></div>
+        <div class="security-card"><strong>🔒</strong><span>Private</span><small>No password requested</small></div>
+      </div>
+      <p>Click below to start Discord authorization. Each step includes a 10-second verification wait. Complete all five steps to continue.</p>
+      <div class="note">Do not close this page while verification is in progress. Discord will handle the sign-in and the configured backend will handle the role assignment.</div>
+      <div class="actions"><button class="secondary back">Back</button><button class="primary" id="authorize">Continue to Discord</button></div>
+      <div class="small">You may be asked to log in to Discord if you are not already signed in.</div>
+    </section>
+
+    <section id="loading" class="status hidden">
+      <div class="spinner"></div><h2>Verification in progress…</h2><p>Please wait while verification is completed. Do not close this page.</p>
+    </section>
+  </main>
+</div>
+
+
+<script>
+const BACKEND_URL="https://discord-bot-production-8904.up.railway.app";
+
+const screens=[...document.querySelectorAll(".screen")];
+const dots=[...document.querySelectorAll(".dot")];
+const waitScreen=document.getElementById("waitScreen");
+const loadFill=document.getElementById("loadFill");
+const waitText=document.getElementById("waitText");
+const loadPercent=document.getElementById("loadPercent");
+const waitShield=document.getElementById("waitShield");
+const shieldFill=document.getElementById("shieldFill");
+
+const agree=document.getElementById("agree");
+const confirm=document.getElementById("confirm");
+const auth=document.getElementById("authorize");
+
+const humanOverlay=document.getElementById("humanOverlay");
+const challengeQuestion=document.getElementById("challengeQuestion");
+const challengeOptions=document.getElementById("challengeOptions");
+const humanVerify=document.getElementById("humanVerify");
+const humanCancel=document.getElementById("humanCancel");
+const humanStatus=document.getElementById("humanStatus");
+
+let step=0;
+let busy=false;
+let timer=null;
+let humanAnswer=null;
+let humanCorrect=null;
+
+function setStep(n){
+  step=Math.max(0,Math.min(4,n));
+  screens.forEach((s,i)=>s.classList.toggle("hidden",i!==step));
+  dots.forEach((d,i)=>d.classList.toggle("active",i<=step));
+}
+
+
+function getWaitColor(currentStep){
+  /* Five loading stages: red, yellow, blue, pink, then green. */
+  const colors=["#ff3b3b","#ffd43b","#3b82ff","#35d06f","#35d06f"];
+  return colors[Math.max(0,Math.min(4,currentStep))];
+}
+
+function updateShield(percent,currentStep){
+  const color=getWaitColor(currentStep);
+  waitShield.style.setProperty("--shield-color",color);
+  shieldFill.style.fill=color;
+  shieldFill.style.clipPath="inset("+(100-percent)+"% 0 0 0)";
+}
+
+function waitThen(action){
+  if(busy)return;
+  busy=true;
+  waitScreen.classList.remove("hidden");
+
+  let elapsed=0;
+  const total=10000;
+  loadFill.style.width="0%";
+  loadPercent.textContent="0%";
+  updateShield(0,step);
+  waitText.textContent="Wait 10 seconds...";
+
+  timer=setInterval(()=>{
+    elapsed+=100;
+    const percent=Math.min(100,Math.round(elapsed/total*100));
+    const remaining=Math.max(0,Math.ceil((total-elapsed)/1000));
+
+    loadFill.style.width=percent+"%";
+    loadPercent.textContent=percent+"%";
+    updateShield(percent,step);
+    waitText.textContent=remaining>0
+      ? "Wait "+remaining+" second"+(remaining===1?"":"s")+"..."
+      : "Verification ready!";
+
+    if(elapsed>=total){
+      clearInterval(timer);
+      timer=null;
+      setTimeout(()=>{
+        waitScreen.classList.add("hidden");
+        busy=false;
+        action();
+      },300);
+    }
+  },100);
+}
+
+/* Five-step navigation */
+document.querySelectorAll(".next").forEach(button=>{
+  button.addEventListener("click",()=>{
+    waitThen(()=>setStep(step+1));
+  });
+});
+
+document.querySelectorAll(".back").forEach(button=>{
+  button.addEventListener("click",()=>{
+    waitThen(()=>setStep(step-1));
+  });
+});
+
+if(agree && confirm){
+  agree.addEventListener("change",()=>{
+    confirm.disabled=!agree.checked;
+  });
+}
+
+/*
+  Human verification challenge.
+  The challenge "style" rotates every 2 hours using local browser time.
+  This is a front-end demo; real anti-bot protection should be enforced
+  server-side as well.
+*/
+const challengeStyles=[
+  {
+    make(){
+      const a=Math.floor(Math.random()*7)+2;
+      const b=Math.floor(Math.random()*7)+2;
+      return {q:"What is "+a+" + "+b+"?", answers:[a+b,a+b+1,a+b-1], correct:0};
+    }
+  },
+  {
+    make(){
+      const items=["🔵","🟢","⭐"];
+      const correct=Math.floor(Math.random()*3);
+      return {q:"Select the "+items[correct]+" symbol.", answers:items, correct};
+    }
+  },
+  {
+    make(){
+      const words=["APPLE","RIVER","CLOUD","STONE"];
+      const correct=Math.floor(Math.random()*words.length);
+      return {q:"Select: "+words[correct], answers:words, correct};
+    }
+  }
+];
+
+function getChallengeStyleIndex(){
+  return Math.floor(Date.now()/(2*60*60*1000)) % challengeStyles.length;
+}
+
+function openHumanVerification(){
+  humanAnswer=null;
+  humanVerify.disabled=true;
+  humanStatus.textContent="";
+  humanStatus.className="human-status";
+
+  const challenge=challengeStyles[getChallengeStyleIndex()].make();
+  humanCorrect=challenge.correct;
+  challengeQuestion.textContent=challenge.q;
+  challengeOptions.innerHTML="";
+
+  challenge.answers.forEach((answer,index)=>{
+    const btn=document.createElement("button");
+    btn.type="button";
+    btn.className="challenge-option";
+    btn.textContent=answer;
+    btn.addEventListener("click",()=>{
+      [...challengeOptions.children].forEach(x=>x.classList.remove("selected"));
+      btn.classList.add("selected");
+      humanAnswer=index;
+      humanVerify.disabled=false;
+      humanStatus.textContent="";
+      humanStatus.className="human-status";
+    });
+    challengeOptions.appendChild(btn);
+  });
+
+  humanOverlay.classList.remove("hidden");
+}
+
+humanCancel.addEventListener("click",()=>{
+  humanOverlay.classList.add("hidden");
+});
+
+humanVerify.addEventListener("click",()=>{
+  if(humanAnswer===null)return;
+
+  if(humanAnswer===humanCorrect){
+    humanStatus.textContent="Human verification completed.";
+    humanStatus.className="human-status ok";
+    humanVerify.disabled=true;
+
+    setTimeout(()=>{
+      humanOverlay.classList.add("hidden");
+
+      /* Only after successful human verification, open Discord authorization. */
+      const returnUrl=encodeURIComponent(location.href);
+      location.href=
+        BACKEND_URL.replace(/\/$/,"")+
+        "/auth/discord?return="+returnUrl;
+    },500);
+  }else{
+    humanStatus.textContent="Verification failed. Please try again.";
+    humanStatus.className="human-status bad";
+    humanAnswer=null;
+    humanVerify.disabled=true;
+    [...challengeOptions.children].forEach(x=>x.classList.remove("selected"));
+
+    setTimeout(openHumanVerification,700);
+  }
+});
+
+/* Step 5 button -> human verification -> Discord authorization */
+if(auth){
+  auth.addEventListener("click",()=>{
+    if(step!==4 || busy)return;
+    openHumanVerification();
+  });
+}
+
+window.addEventListener("beforeunload",()=>{
+  if(timer)clearInterval(timer);
+});
+
+setStep(0);
+</script>
+
+</body>
+</html>
