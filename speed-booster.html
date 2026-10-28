@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#09090c">
+<title>RG GAMER BOY FF — SPEED BOOSTER</title>
+<style>
+*{box-sizing:border-box} :root{color-scheme:dark;--red:#ff2638;--red2:#b90019;--panel:#111116;--muted:#b8b8c2}
+html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at top,#291016 0%,#09090c 48%,#050506 100%);color:#fff;font-family:Arial,Helvetica,sans-serif}
+body{display:flex;justify-content:center}.page{width:min(100%,520px);padding:26px 16px 36px;min-height:100vh;text-align:center}
+.logo{width:92px;height:92px;margin:0 auto 15px;border:3px solid var(--red);border-radius:50%;display:grid;place-items:center;font-size:42px;background:#190b0e;box-shadow:0 0 28px #ff263844}
+h1{font-size:clamp(27px,7vw,38px);margin:0;font-weight:900}.subtitle{margin:10px 0 24px;color:#ff7884;letter-spacing:1.5px;font-weight:800;font-size:13px}
+.panel{border:1px solid #ff26384a;background:linear-gradient(145deg,#171116,#0d0d12);border-radius:18px;padding:19px 16px;margin:14px 0;box-shadow:0 10px 30px #0005;text-align:left}
+.panel h2{margin:0 0 9px;font-size:20px}.muted{color:var(--muted);font-size:13px;line-height:1.55}.pill{display:inline-block;border:1px solid #ff2638a0;border-radius:99px;color:#ff9ba4;padding:5px 10px;font-size:11px;font-weight:900;letter-spacing:.7px;margin-bottom:12px}
+.btn{width:100%;min-height:48px;border:1px solid #ff6c79;border-radius:12px;background:linear-gradient(135deg,#ff3446,#d80d27 58%,#a9001b);color:#fff;font-weight:900;font-size:15px;margin-top:12px;cursor:pointer}.btn.secondary{background:#1a1a20;border-color:#44444c}.btn:active{transform:scale(.99)}
+input{width:100%;min-height:48px;padding:12px;border-radius:10px;border:1px solid #4b3438;background:#09090d;color:#fff;font-size:14px;outline:none}input:focus{border-color:var(--red)}
+.status{display:flex;gap:10px;align-items:center;border:1px solid #303039;background:#101015;border-radius:12px;padding:13px;margin-top:14px;font-size:13px;line-height:1.45}.dot{width:10px;height:10px;flex:0 0 10px;border-radius:50%;background:#777;box-shadow:0 0 10px #7778}.dot.on{background:#35e38b;box-shadow:0 0 12px #35e38b88}
+.note{font-size:12px;line-height:1.6;color:#aaa;margin:18px 3px}.back{display:block;color:#ff8b96;text-decoration:none;font-size:13px;font-weight:800;margin-top:18px}.message{min-height:18px;margin:10px 0 0;font-size:12px;color:#ff9ba4;line-height:1.4}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<main class="page">
+  <div class="logo" aria-hidden="true">⚡</div>
+  <h1>RG GAMER BOY FF</h1>
+  <div class="subtitle">SPEED BOOSTER • FREE / VIP</div>
+  <section class="panel">
+    <span class="pill">FREE PLAN</span>
+    <h2>⚡ Quick Redirect</h2>
+    <p class="muted">Connect Free mode to enable the standard 1.5-second website redirect after CAPTCHA verification.</p>
+    <button class="btn" id="freeConnect">CONNECT FREE</button>
+  </section>
+  <section class="panel">
+    <span class="pill">VIP PLAN</span>
+    <h2>🔥 VIP Fast Redirect</h2>
+    <p class="muted">Enter your VIP key to enable the shorter 250-millisecond website redirect after CAPTCHA verification.</p>
+    <input id="vipKey" type="password" autocomplete="off" placeholder="Enter VIP activation key" aria-label="VIP activation key">
+    <button class="btn" id="activateVip">ACTIVATE & CONNECT VIP</button>
+    <p class="message" id="message" aria-live="polite"></p>
+  </section>
+  <section class="panel">
+    <h2>Connection Status</h2>
+    <div class="status"><span class="dot" id="dot"></span><span id="statusText">Disconnected — choose a plan above.</span></div>
+    <button class="btn secondary" id="disconnect">DISCONNECT</button>
+  </section>
+  <p class="note">Important: This is a website-level redirect timing feature only. It does not act as a VPN and cannot increase mobile data/Wi-Fi bandwidth, reduce game ping, or make downloads themselves faster. The VIP key is checked in this page's JavaScript, so it is suitable only for a demo; secure VIP licensing requires server-side validation.</p>
+  <a class="back" href="index.html">← BACK TO OFFICIAL STORE</a>
+</main>
+<script>
+(function(){
+  const VIP_KEY = "RG-FF-SPEED-BOOST-KEY-5982467YZ";
+  const connectedKey = "rgSpeedBoosterConnected";
+  const planKey = "rgSpeedBoosterPlan";
+  const vipKey = "rgSpeedBoosterVipActive";
+  const statusText = document.getElementById("statusText");
+  const dot = document.getElementById("dot");
+  const message = document.getElementById("message");
+  function render(){
+    const connected = localStorage.getItem(connectedKey) === "true";
+    const plan = localStorage.getItem(planKey) || "free";
+    dot.classList.toggle("on", connected);
+    if(!connected){statusText.textContent="Disconnected — normal 1.5-second redirect.";return;}
+    statusText.textContent = plan === "vip" ? "Connected — VIP redirect enabled (250 ms)." : "Connected — Free mode enabled (1.5 seconds).";
+  }
+  document.getElementById("freeConnect").addEventListener("click",function(){
+    localStorage.setItem(connectedKey,"true");localStorage.setItem(planKey,"free");localStorage.setItem(vipKey,"false");
+    message.textContent="Free mode connected.";render();
+  });
+  document.getElementById("activateVip").addEventListener("click",function(){
+    const entered=document.getElementById("vipKey").value.trim();
+    if(entered !== VIP_KEY){message.textContent="Invalid VIP key. Please check it and try again.";return;}
+    localStorage.setItem(connectedKey,"true");localStorage.setItem(planKey,"vip");localStorage.setItem(vipKey,"true");
+    message.textContent="VIP activated and connected on this browser.";render();
+  });
+  document.getElementById("disconnect").addEventListener("click",function(){
+    localStorage.setItem(connectedKey,"false");localStorage.setItem(planKey,"free");localStorage.setItem(vipKey,"false");
+    message.textContent="Booster disconnected.";render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>
